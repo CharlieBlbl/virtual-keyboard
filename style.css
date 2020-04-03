@@ -1,3 +1,10 @@
+.keyboard__text {
+    position: absolute;
+    top: 185px;
+    width: 98%;
+    height: 100px;
+}
+
 .keyboard {
     position: fixed;
     left: 0;

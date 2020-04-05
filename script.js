@@ -1,10 +1,26 @@
-window.onload = function () {
+window.onload = function () {    
     keyboardInit()
 }
 
 
 
 const keyboardInit =() =>{
+    // let index = true
+    const keyLayoutEng = [
+        "`", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "-", "=", "Backspace",
+        "Tab", "q", "w", "e", "r", "t", "y", "u", "i", "o", "p", "[", "]", "\\", "Delete",
+        "CapsLock", "a", "s", "d", "f", "g", "h", "j", "k", "l", ";", "'", "Enter",
+        "ShiftLeft", "z", "x", "c", "v", "b", "n", "m", ".", ",", "/", "ArrowUp", "ShiftRight",
+        "ControlLeft", "MetaLeft", "AltLeft", "Space", "AltRight", "ControlRight", "ArrowLeft", "ArrowDown", "ArrowRight" 
+    ]
+    const keyLayoutRus = [
+        "ё", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "-", "=", "Backspace",
+        "Tab", "й", "ц", "у", "к", "е", "н", "г", "ш", "щ", "з", "х", "ъ", "\\", "Delete",
+        "CapsLock", "ф", "ы", "в", "а", "п", "р", "о", "л", "д", "ж", "э", "Enter",
+        "ShiftLeft", "я", "ч", "с", "м", "и", "т", "ь", "б", "ю", "/", "ArrowUp", "ShiftRight",
+        "ControlLeft", "MetaLeft", "AltLeft", "Space", "AltRight", "ControlRight", "ArrowLeft", "ArrowDown", "ArrowRight" 
+    ]
+
     // Create main elements
     let wrapper = document.createElement("div")
     let main = document.createElement("div")
@@ -17,7 +33,7 @@ const keyboardInit =() =>{
     textarea.classList.add("keyboard__text")
     textarea.autofocus = 'true'
     keysContainer.classList.add("keyboard__keys")
-    keysContainer.appendChild(_createKeys())
+    keysContainer.appendChild(_createKeys(_keyChangeLang()))
     
     
     let elementsKeys = keysContainer.querySelectorAll(".keyboard__key")
@@ -30,24 +46,8 @@ const keyboardInit =() =>{
     document.body.appendChild(wrapper)
 
 
-    function _createKeys () {
-        const fragment = document.createDocumentFragment();
-        const keyLayoutEng = [
-            "`", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "-", "=", "Backspace",
-            "Tab", "q", "w", "e", "r", "t", "y", "u", "i", "o", "p", "[", "]", "\\", "Delete",
-            "CapsLock", "a", "s", "d", "f", "g", "h", "j", "k", "l", ";", "'", "Enter",
-            "ShiftLeft", "z", "x", "c", "v", "b", "n", "m", ".", ",", "/", "ArrowUp", "ShiftRight",
-            "ControlLeft", "MetaLeft", "AltLeft", "Space", "AltRight", "ControlRight", "ArrowLeft", "ArrowDown", "ArrowRight" 
-        ]
-        const keyLayoutEngApp = [
-            "`", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "-", "=", "Backspace",
-            "Tab", "Q", "W", "e", "r", "t", "y", "u", "i", "o", "p", "[", "]", "\\", "Delete",
-            "CapsLock", "a", "s", "d", "f", "g", "h", "j", "k", "l", ";", "'", "Enter",
-            "ShiftLeft", "z", "x", "c", "v", "b", "n", "m", ".", ",", "/", "ArrowUp", "ShiftRight",
-            "ControlLeft", "MetaLeft", "AltLeft", "Space", "AltRight", "ControlRight", "ArrowLeft", "ArrowDown", "ArrowRight" 
-        ]
-        // let caps = false
-        let keyLayout = keyLayoutEng
+    function _createKeys (keyLayout) {
+        const fragment = document.createDocumentFragment();        
 
         // Creates HTML for an icon
         const createIconHTML = (icon_name) => {
@@ -192,8 +192,10 @@ const keyboardInit =() =>{
                         }
 
                     case "keyboard_tab":
-                        return function () {textarea.value += '    '
-                        textarea.focus()} 
+                        return function () {
+                        textarea.value += '    '
+                        textarea.focus()
+                        } 
                     
                     case "DEL":                        
                     return function () {currentPosition = textarea.selectionStart
@@ -261,13 +263,17 @@ const keyboardInit =() =>{
         document.addEventListener('keydown', event =>{       
             // event.preventDefault()
             // console.error(event)
+            let index = true
             arrKey.forEach(key =>{                                             
                 if (event.key === key.id.toLocaleLowerCase() || event.code === key.id){
                     key.classList.add('keyboard__key--press')
-                    switch(key.id) {
-                        case "CapsLock" || "ShiftLeft" || "ShiftRirht":
-                            _keysToUpperCase(key, event)
-                        break    
+                    if(key.id === "CapsLock" || key.id === "ShiftLeft" || key.id === "ShiftRirht"  ) {
+                        _keysToUpperCase(key, event)                         
+                    }
+                    console.error(key.id)
+                    if(key.id === "ShiftLeft" && key.id === "AltLeft"){
+                        index = !index
+                        
                     }
                 }    
                 
@@ -278,20 +284,18 @@ const keyboardInit =() =>{
             arrKey.forEach(key =>{
                 if (event.key === key.id.toLocaleLowerCase() || event.code === key.id){
                     key.classList.remove('keyboard__key--press')
-                    switch(key.id) {
-                        case "ShiftLeft" || "ShiftRirht":
-                            _keysToUpperCase(key, event)
-                        break    
+                    if(key.id === "ShiftLeft" || key.id === "ShiftRirht"  ) {
+                        _keysToUpperCase(key, event)                        
                     }
                 }
             })            
         })            
     }
 
-    const _keysToUpperCase = (key, event) => {
-        if(key.id === "CapsLock"){
+    function _keysToUpperCase (key, event) {
+        if(key.id === "CapsLock"){ 
             key.classList.toggle('keyboard__key--active') 
-            let point = [...key.classList].some(cl => cl === "keyboard__key--active")
+            let point = [...key.classList].some(cl => cl === "keyboard__key--active")                       
             elementsKeys.forEach(key => {          
                 if (key.textContent.length === 1) {
                     if(point){
@@ -301,25 +305,28 @@ const keyboardInit =() =>{
                     }                  
                 }                           
             }) 
-        }
-        if(key.id === "ShiftLeft" || key.id === "ShifRight"){
-            console.error(event.type)
+        }  
+        if(key.id === "ShiftLeft" || key.id === "ShifRight"){ 
             elementsKeys.forEach(key => {          
                 if (key.textContent.length === 1) {
+                    if(event.type === 'keyup'){
+                        key.textContent = key.textContent.toLowerCase()
+                    }
                     if(event.type === 'keydown'){
-                        key.textContent = key.textContent.toUpperCase()
-                    }else{
-                        key.textContent = key.textContent.toLocaleLowerCase()
-                    }                  
+                        key.textContent = key.textContent.toUpperCase()}                                     
                 }                           
             }) 
         }
 
     }
 
-
-
-
+    function _keyChangeLang (index){        
+        if (index){
+           return keyLayoutEng
+        }else{
+            return keyLayoutRus
+        }
+    }
 
 }
     

@@ -330,9 +330,11 @@ const keyboardInit = (localIndex) => {
 
     document.addEventListener('keyup', (event) => {
       arrKey.forEach((key) => {
-        if (event.which.toString() === key.id || event.code === key.id) {
+        const { which, code } = event
+        const { id } = key
+        if (which.toString() === id || code === id) {
           key.classList.remove('keyboard__key--press');
-          if (key.id === 'ShiftLeft' || key.id === 'ShiftRirht') {
+          if (id === 'ShiftLeft' || id === 'ShiftRirht') {
             // eslint-disable-next-line
             keysToUpperCase(key, event);
           }

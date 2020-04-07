@@ -52,12 +52,15 @@ const keyboardInit = (localIndex) => {
   const main = document.createElement('div');
   const textarea = document.createElement('textarea');
   const keysContainer = document.createElement('div');
+  const description = document.createElement('h3');
 
   // Setup main elements
   main.classList.add('keyboard');
   textarea.classList.add('keyboard__text');
   textarea.autofocus = 'true';
   keysContainer.classList.add('keyboard__keys');
+  description.classList.add('description');
+  description.textContent = 'OS Windows. ShiftLeft + AltLeft - change language';
 
   // create keys
   const language = localIndex ? keyLayouts.rus : keyLayouts.eng;
@@ -72,6 +75,7 @@ const keyboardInit = (localIndex) => {
 
   // Add to DOM
   main.appendChild(keysContainer);
+  wrapper.appendChild(description);
   wrapper.appendChild(textarea);
   wrapper.appendChild(main);
   document.body.appendChild(wrapper);

@@ -89,3 +89,7 @@
 .no{
     display: none;
 }
+.description{
+    font-family: 'Times New Roman', Times, serif;
+    color: #02003B;
+}

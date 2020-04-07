@@ -49,7 +49,9 @@
 
 .keyboard__key:active,
 .keyboard__key--press {
-    background: rgba(255, 255, 255, 0.12);
+    background: rgba(255, 255, 255, 0.212);
+    border: 1px solid white;
+    transition: 0.5s ease;
 }
 
 
@@ -83,3 +85,7 @@
 .keyboard__key--dark {
     background: rgba(0, 0, 0, 0.25);
 } 
+
+.no{
+    display: none;
+}

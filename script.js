@@ -1,13 +1,13 @@
 window.onload = function () {  
-    let localIndex = this.localStorage.getItem('index') 
+    // this.localStorage.clear()
+    let localIndex = this.localStorage.getItem('index') === 'true'? true : false
+    this.console.error(localIndex)
     keyboardInit(localIndex)  
-    // this.console.error(localIndex)  
-    // this.console.error(this.localStorage)
 }
 
 const keyboardInit =(localIndex) =>{
    let keyLayouts = {
-        index: true,
+        index: false,
         eng: [
             {text: "`", code: 192}, {text: "1", code:  49}, {text: "2", code: 50}, {text: "3", code: 51}, 
             {text: "4", code: 52}, {text: "5", code: 53}, {text: "6", code:  54}, {text: "7", code: 56},
@@ -66,7 +66,8 @@ const keyboardInit =(localIndex) =>{
     textarea.autofocus = 'true'
     keysContainer.classList.add("keyboard__keys")
     
-    // create keys   
+    // create keys
+    // console.error(localIndex ? 1 : 0 +' ble')   
     let language = localIndex ? keyLayouts.rus : keyLayouts.eng  
     keysContainer.appendChild(_createKeys(language))
     
@@ -316,7 +317,7 @@ const keyboardInit =(localIndex) =>{
             let ctrl =[...arrKey[57].classList].some(el => el === 'keyboard__key--press')
             
             if(shift && ctrl){                                                           
-                _keyChangeLang(keyLayouts.index)                         
+                _keyChangeLang(localIndex)                         
             }  
         })
     
@@ -337,8 +338,7 @@ const keyboardInit =(localIndex) =>{
 
     function _keysToUpperCase (key, event) {        
           
-        if(key.id === "CapsLock"){ 
-            console.error(key)
+        if(key.id === "CapsLock"){           
             key.classList.toggle('keyboard__key--active') 
             let point = [...key.classList].some(cl => cl === "keyboard__key--active")  
                               
@@ -368,7 +368,7 @@ const keyboardInit =(localIndex) =>{
 
     function _keyChangeLang (index){                 
         if (index){            
-            keyLayouts.index = !index            
+            localIndex = !index            
             elementsKeys.forEach(key =>{
                keyLayouts.eng.forEach(el =>{
                    if(key.id  === el.code.toString()){
@@ -377,7 +377,7 @@ const keyboardInit =(localIndex) =>{
                })
             })
         }else{
-            keyLayouts.index = !index            
+            localIndex = !index            
             elementsKeys.forEach(key =>{
                 keyLayouts.rus.forEach(el =>{
                     if(key.id  === el.code.toString()){
@@ -386,9 +386,9 @@ const keyboardInit =(localIndex) =>{
                 })
              })
         }
-        this.localStorage.setItem('index', keyLayouts.index)
+        this.localStorage.setItem('index', localIndex)
         // console.error(this.localStorage)
-        // console.error(keyLayouts.index)
+        console.error(localIndex)
     }
     
 }
